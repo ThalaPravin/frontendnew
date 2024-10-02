@@ -17222,7 +17222,7 @@ call-btn:focus {
   font-size: 0.875rem;
   font-weight: 500;
   color: #272b41;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
 }
 
 .patient-info ul li+li {

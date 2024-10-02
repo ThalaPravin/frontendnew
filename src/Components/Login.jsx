@@ -28,15 +28,11 @@ export default function LoginDoctor() {
 			setIsLoading(true); // Set loading state to true upon form submission
 			toast("Please wait while we are fetching your data");
 			try {
-				const response = await axios.post(
-					"https://healthcare-backend-o4vb.onrender.com/user/signin",
-					data,
-					{
-						headers: {
-							isvalidrequest: "twinsistech",
-						},
+				const response = await axios.post("http://localhost:5000/user/signin", data, {
+					headers: {
+						isvalidrequest: "twinsistech",
 					},
-				);
+				});
 
 				console.log(response);
 				const user = response?.data?.result?.user;
@@ -44,15 +40,12 @@ export default function LoginDoctor() {
 				await localStorage.setItem("token", response?.data?.result?.token);
 
 				if (user.createdProfile && user.role === "doctor") {
-					const doctor = await axios.get(
-						`https://healthcare-backend-o4vb.onrender.com/doctor/${user._id}`,
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: response?.data.result.token,
-							},
+					const doctor = await axios.get(`http://localhost:5000/doctor/${user._id}`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: response?.data.result.token,
 						},
-					);
+					});
 
 					toast("Data fetched successfully");
 					await localStorage.setItem(
@@ -60,15 +53,12 @@ export default function LoginDoctor() {
 						JSON.stringify(doctor.data.result.doctor),
 					);
 				} else if (user.createdProfile && user.role === "user") {
-					const patient = await axios.get(
-						`https://healthcare-backend-o4vb.onrender.com/patient/${user._id}`,
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: response?.data.result.token,
-							},
+					const patient = await axios.get(`http://localhost:5000/patient/${user._id}`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: response?.data.result.token,
 						},
-					);
+					});
 
 					toast("Data fetched successfully");
 					await localStorage.setItem(
@@ -141,7 +131,7 @@ export default function LoginDoctor() {
 			toast("Please wait while we are fetching your data");
 			try {
 				const response = await axios.post(
-					`https://healthcare-backend-o4vb.onrender.com/user/google`,
+					`http://localhost:5000/user/google`,
 					{
 						email: decoded.email,
 					},
@@ -158,15 +148,12 @@ export default function LoginDoctor() {
 				await localStorage.setItem("token", response?.data?.result?.token);
 
 				if (user.createdProfile && user.role === "doctor") {
-					const doctor = await axios.get(
-						`https://healthcare-backend-o4vb.onrender.com/doctor/${user._id}`,
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: response?.data.result.token,
-							},
+					const doctor = await axios.get(`http://localhost:5000/doctor/${user._id}`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: response?.data.result.token,
 						},
-					);
+					});
 
 					toast("Data fetched successfully");
 					await localStorage.setItem(
@@ -174,15 +161,12 @@ export default function LoginDoctor() {
 						JSON.stringify(doctor.data.result.doctor),
 					);
 				} else if (user.createdProfile && user.role === "user") {
-					const patient = await axios.get(
-						`https://healthcare-backend-o4vb.onrender.com/patient/${user._id}`,
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: response?.data.result.token,
-							},
+					const patient = await axios.get(`http://localhost:5000/patient/${user._id}`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: response?.data.result.token,
 						},
-					);
+					});
 
 					toast("Data fetched successfully");
 					await localStorage.setItem(
@@ -254,7 +238,7 @@ export default function LoginDoctor() {
 												className={`btn log-btn ${
 													role === "patient" ? "btn-primary" : ""
 												}`}
-												onClick={() => setRole('patient')}
+												onClick={() => setRole("patient")}
 											>
 												Patient
 											</Link>
@@ -263,7 +247,7 @@ export default function LoginDoctor() {
 												className={`btn log-btn ${
 													role === "doctor" ? "btn-primary" : ""
 												}`}
-												onClick={() => setRole('doctor')}
+												onClick={() => setRole("doctor")}
 											>
 												Doctor
 											</Link>

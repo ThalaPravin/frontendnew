@@ -25,9 +25,9 @@ export default function Checkout() {
 		selectedSlotDay,
 		setSelectedDoctor,
 		setSelectedSpecialist,
-	   setSelectedLocation,
-	   setSymptoms,
-	   setTemperature,
+		setSelectedLocation,
+		setSymptoms,
+		setTemperature,
 		setBloodpresure,
 		setHeartRate,
 		setReportFiles,
@@ -37,7 +37,6 @@ export default function Checkout() {
 		setSelectedAppointment,
 		setInProcess,
 		setSelectedSpecialisthome,
-	   
 	} = OrderState();
 
 	function parseTime(timeStr) {
@@ -53,7 +52,7 @@ export default function Checkout() {
 		return { hours, minutes };
 	}
 	console.log(selectedDate);
-	console.log(reportFiles)
+	console.log(reportFiles);
 	function convertToISO(dateStr, startTimeStr) {
 		// Parse the date
 		const [day, month, year] = dateStr.split("-").map(Number);
@@ -129,9 +128,9 @@ export default function Checkout() {
 		try {
 			console.log(patientInfo._id);
 			console.log(patientInfo._id);
-			console.log("reportFiles", reportFiles);	
+			console.log("reportFiles", reportFiles);
 			const result = await axios.post(
-				`https://healthcare-backend-o4vb.onrender.com/appointment/create`,
+				`http://localhost:5000/appointment/create`,
 				{
 					patientId: patientInfo._id,
 					doctorId: selectedDoctor._id,
@@ -154,20 +153,20 @@ export default function Checkout() {
 			);
 
 			console.log(result);
-			
-			setSelectedSpecialist("")
-			setSelectedLocation("")
-			setSymptoms([])
-         	setTemperature("")
-         	setBloodpresure("")
-         	setHeartRate("")
-         	setReportFiles([])
-        	setSelectedSlotDay("")
-          	setSelectedSlotTime("")
-            setSelectedDate()
-            setSelectedAppointment(null)
-        	setInProcess(false)
-        	setSelectedSpecialisthome("")
+
+			setSelectedSpecialist("");
+			setSelectedLocation("");
+			setSymptoms([]);
+			setTemperature("");
+			setBloodpresure("");
+			setHeartRate("");
+			setReportFiles([]);
+			setSelectedSlotDay("");
+			setSelectedSlotTime("");
+			setSelectedDate();
+			setSelectedAppointment(null);
+			setInProcess(false);
+			setSelectedSpecialisthome("");
 
 			toast("Appointment Created Successfully");
 			navigate("/user/booking-success");
@@ -178,18 +177,15 @@ export default function Checkout() {
 
 	// console.log(patientInfo);
 
-
-	
-
 	useEffect(() => {
 		const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 		if (patientInfo) {
 			setPatientInfo(patientInfo);
 		}
 	}, []);
-	useEffect (()=>{
+	useEffect(() => {
 		window.scrollTo(0, 0);
-	  },[]);
+	}, []);
 
 	return (
 		<div>

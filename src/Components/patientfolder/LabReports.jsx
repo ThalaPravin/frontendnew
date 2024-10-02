@@ -29,7 +29,7 @@
 //   }, [pdfPath]);
 
 //   const openPdf = (path) => {
-// 		setPdfPath(`https://healthcare-backend-o4vb.onrender.com/files/${path}`);
+// 		setPdfPath(`http://localhost:5000/files/${path}`);
 //   };
 
 //   const closePdf = () => {
@@ -62,7 +62,7 @@
 // 		const patient = localStorage.getItem("patientInfo");
 // 		const patientId = JSON.parse(patient)?._id;
 // 		try {
-// 			const response = await axios.get(`https://healthcare-backend-o4vb.onrender.com/patient/${patientId}/reports`, {
+// 			const response = await axios.get(`http://localhost:5000/patient/${patientId}/reports`, {
 // 				headers: {
 // 					isvalidrequest: "twinsistech",
 // 					Authorization: isAuthenticated,
@@ -85,7 +85,7 @@
 //     console.log(id);
 //     try {
 //       const data = await axios.post(
-//         "https://healthcare-backend-o4vb.onrender.com/appointment/patientappointments",
+//         "http://localhost:5000/appointment/patientappointments",
 //         {
 //           patientId: id,
 //         },
@@ -415,317 +415,337 @@
 
 // export default LabReports;
 
-
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { OrderState } from "../../Contexts";
 
 const LabReports = () => {
-  const [currentPageToday, setCurrentPageToday] = useState(1);
-  const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
-  const [currentPageHistory, setCurrentPageHistory] = useState(1);
-  const [itemsPerPage] = useState(5);
-  const [patientInfo, setPatientInfo] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
-  const [labReports, setLabReports] = useState([]);
-  const [isPdfOpen, setIsPdfOpen] = useState(false);
-  const [pdfPath, setPdfPath] = useState("");
-  const [reportType, setReportType] = useState("lab");
+	const [currentPageToday, setCurrentPageToday] = useState(1);
+	const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+	const [currentPageHistory, setCurrentPageHistory] = useState(1);
+	const [itemsPerPage] = useState(5);
+	const [patientInfo, setPatientInfo] = useState(null);
+	const [userInfo, setUserInfo] = useState(null);
+	const [labReports, setLabReports] = useState([]);
+	const [isPdfOpen, setIsPdfOpen] = useState(false);
+	const [pdfPath, setPdfPath] = useState("");
+	const [reportType, setReportType] = useState("lab");
 
-  const { setSelectedAppointment, setIsLoggedIn } = OrderState();
-  const navigate = useNavigate();
+	const { setSelectedAppointment, setIsLoggedIn } = OrderState();
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchLabReports = async () => {
-      const patient = localStorage.getItem("patientInfo");
-      const patientId = JSON.parse(patient)?._id;
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`https://healthcare-backend-o4vb.onrender.com/patient/${patientId}/reports`, {
-          headers: {
-            isvalidrequest: "twinsistech",
-            Authorization: token,
-          },
-        });
-        setLabReports(response.data.result);
-      } catch (error) {
-        console.error("Error fetching lab reports:", error);
-      }
-    };
+	useEffect(() => {
+		const fetchLabReports = async () => {
+			const patient = localStorage.getItem("patientInfo");
+			const patientId = JSON.parse(patient)?._id;
+			const token = localStorage.getItem("token");
+			try {
+				const response = await axios.get(
+					`http://localhost:5000/patient/${patientId}/reports`,
+					{
+						headers: {
+							isvalidrequest: "twinsistech",
+							Authorization: token,
+						},
+					},
+				);
+				setLabReports(response.data.result);
+			} catch (error) {
+				console.error("Error fetching lab reports:", error);
+			}
+		};
 
-    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+		const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+		const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-    if (userInfo && userInfo.role !== "user") {
-      navigate("/");
-    } else {
-      fetchLabReports();
-    }
+		if (userInfo && userInfo.role !== "user") {
+			navigate("/");
+		} else {
+			fetchLabReports();
+		}
 
-    setPatientInfo(patientInfo);
-    setUserInfo(userInfo);
-    window.scrollTo(0, 0);
-  }, [navigate]);
+		setPatientInfo(patientInfo);
+		setUserInfo(userInfo);
+		window.scrollTo(0, 0);
+	}, [navigate]);
 
-  const openPdf = (path) => {
-    setPdfPath(`https://healthcare-backend-o4vb.onrender.com/files/${path}`);
-    setIsPdfOpen(true);
-  };
+	const openPdf = (path) => {
+		setPdfPath(`http://localhost:5000/files/${path}`);
+		setIsPdfOpen(true);
+	};
 
-  const closePdf = () => {
-    setPdfPath("");
-    setIsPdfOpen(false);
-  };
+	const closePdf = () => {
+		setPdfPath("");
+		setIsPdfOpen(false);
+	};
 
-  const handleLogout = () => {
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
-    localStorage.removeItem("patientInfo");
-    setIsLoggedIn(false);
-  };
+	const handleLogout = () => {
+		localStorage.removeItem("userInfo");
+		localStorage.removeItem("token");
+		localStorage.removeItem("patientInfo");
+		setIsLoggedIn(false);
+	};
 
-  const filteredReports = labReports.filter(report => report.type === reportType);
-  const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
-  const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
-  const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
-  return (
-    <>
-      <div className="main-wrapper">
-        <div className="breadcrumb-bar-two">
-          <div className="container">
-            <div className="row align-items-center inner-banner">
-              <div className="col-md-12 col-12 text-center">
-                <h2 className="breadcrumb-title">Reports</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="content">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-                <div className="profile-sidebar">
-                  <div className="widget-profile pro-widget-content">
-                    <div className="profile-info-widget">
-                      <a href="#" className="booking-doc-img">
-                        <img
-                          src={
-                            patientInfo?.profilePicture ||
-                            "/assets/img/banners/defualtImgjpg.jpg"
-                          }
-                          alt="/assets/img/banners/defualtImgjpg.jpg"
-                        />
-                      </a>
-                      <div className="profile-det-info">
-                        <h3>{patientInfo?.userId?.name}</h3>
-                        <div className="patient-details">
-                          <h5>
-                            <i className="fas fa-birthday-cake" />
-                            {new Date(patientInfo?.dob).toDateString()}
-                            , {patientInfo?.age} years
-                          </h5>
-                          <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" />{" "}
-                            {patientInfo?.city}, {patientInfo?.country}
-                          </h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dashboard-widget">
-                    <nav className="dashboard-menu">
-                      <ul>
-                        <li>
-                          <Link to="/user/dashboard">
-                            <i className="fas fa-columns" />
-                            <span>Dashboard</span>
-                          </Link>
-                        </li>
-                        <li className="active">
-                          <Link to="/user/labreports">
-                            <i className="fas fa-list-alt" />
-                            <span> Reports</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/user/prescriptions">
-                            <i className="fas fa-file-invoice" />
-                            <span>Prescriptions</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/user/medical-records">
-                            <i className="fas fa-clipboard" />
-                            <span>Medical Records</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/user/profile-settings">
-                            <i className="fas fa-user-cog" />
-                            <span>Profile Settings</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/user/change-password">
-                            <i className="fas fa-lock" />
-                            <span>Change Password</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/login" onClick={handleLogout}>
-                            <i className="fas fa-sign-out-alt" />
-                            <span>Logout</span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-7 col-lg-8 col-xl-9">
-                <div className="row">
-                  <div className="col-sm-12">
-                    <nav className="user-tabs mb-4">
-                    <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
-									<li className="nav-item">
-										<a
-										className="nav-link active"
-										// href="#pat_appointment"
-										data-bs-toggle="tab">
-										Reports </a>
-									</li>
-									</ul>
-                    </nav>
-                    
-                    <nav>
+	const filteredReports = labReports.filter((report) => report.type === reportType);
+	const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
+	const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
+	const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
+	return (
+		<>
+			<div className="main-wrapper">
+				<div className="breadcrumb-bar-two">
+					<div className="container">
+						<div className="row align-items-center inner-banner">
+							<div className="col-md-12 col-12 text-center">
+								<h2 className="breadcrumb-title">Reports</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="content">
+					<div className="container">
+						<div className="row">
+							<div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+								<div className="profile-sidebar">
+									<div className="widget-profile pro-widget-content">
+										<div className="profile-info-widget">
+											<a href="#" className="booking-doc-img">
+												<img
+													src={
+														patientInfo?.profilePicture ||
+														"/assets/img/banners/defualtImgjpg.jpg"
+													}
+													alt="/assets/img/banners/defualtImgjpg.jpg"
+												/>
+											</a>
+											<div className="profile-det-info">
+												<h3>{patientInfo?.userId?.name}</h3>
+												<div className="patient-details">
+													<h5>
+														<i className="fas fa-birthday-cake" />
+														{new Date(patientInfo?.dob).toDateString()},{" "}
+														{patientInfo?.age} years
+													</h5>
+													<h5 className="mb-0">
+														<i className="fas fa-map-marker-alt" />{" "}
+														{patientInfo?.city}, {patientInfo?.country}
+													</h5>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="dashboard-widget">
+										<nav className="dashboard-menu">
+											<ul>
+												<li>
+													<Link to="/user/dashboard">
+														<i className="fas fa-columns" />
+														<span>Dashboard</span>
+													</Link>
+												</li>
+												<li className="active">
+													<Link to="/user/labreports">
+														<i className="fas fa-list-alt" />
+														<span> Reports</span>
+													</Link>
+												</li>
+												<li>
+													<Link to="/user/prescriptions">
+														<i className="fas fa-file-invoice" />
+														<span>Prescriptions</span>
+													</Link>
+												</li>
+												<li>
+													<Link to="/user/medical-records">
+														<i className="fas fa-clipboard" />
+														<span>Medical Records</span>
+													</Link>
+												</li>
+												<li>
+													<Link to="/user/profile-settings">
+														<i className="fas fa-user-cog" />
+														<span>Profile Settings</span>
+													</Link>
+												</li>
+												<li>
+													<Link to="/user/change-password">
+														<i className="fas fa-lock" />
+														<span>Change Password</span>
+													</Link>
+												</li>
+												<li>
+													<Link to="/login" onClick={handleLogout}>
+														<i className="fas fa-sign-out-alt" />
+														<span>Logout</span>
+													</Link>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</div>
+							</div>
+							<div className="col-md-7 col-lg-8 col-xl-9">
+								<div className="row">
+									<div className="col-sm-12">
+										<nav className="user-tabs mb-4">
+											<ul className="nav nav-tabs nav-tabs-bottom nav-justified">
+												<li className="nav-item">
+													<a
+														className="nav-link active"
+														// href="#pat_appointment"
+														data-bs-toggle="tab"
+													>
+														Reports{" "}
+													</a>
+												</li>
+											</ul>
+										</nav>
 
-                      <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                        <li className="nav-item">
-                          <a
-                            className="nav-link active"
-                            
-                            data-bs-toggle="tab"
-                            onClick={() => setReportType("lab")}
-                          >
-                            Lab Reports
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            data-bs-toggle="tab"
-                            onClick={() => setReportType("radiology")}
-                          >
-                            Radiology Reports
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                    <div className="tab-content">
-                      <div className="tab-pane show active" id="upcoming-appointments">
-                        <div className="card">
-                          <div className="card-body">
-                            <div className="table-responsive">
-                              <table className="table table-hover table-center mb-0">
-                                <thead>
-                                  <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Attachment</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {filteredReports.map((report) => (
-                                    <tr key={report._id}>
-                                      <td>{new Date(report.date).toDateString()}</td>
-                                      <td>{report.description}</td>
-                                      <td>{report.attachment}</td>
-                                      <td>
-                                        {/* <button
+										<nav>
+											<ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+												<li className="nav-item">
+													<a
+														className="nav-link active"
+														data-bs-toggle="tab"
+														onClick={() => setReportType("lab")}
+													>
+														Lab Reports
+													</a>
+												</li>
+												<li className="nav-item">
+													<a
+														className="nav-link"
+														data-bs-toggle="tab"
+														onClick={() => setReportType("radiology")}
+													>
+														Radiology Reports
+													</a>
+												</li>
+											</ul>
+										</nav>
+										<div className="tab-content">
+											<div
+												className="tab-pane show active"
+												id="upcoming-appointments"
+											>
+												<div className="card">
+													<div className="card-body">
+														<div className="table-responsive">
+															<table className="table table-hover table-center mb-0">
+																<thead>
+																	<tr>
+																		<th>Date</th>
+																		<th>Description</th>
+																		<th>Attachment</th>
+																		<th>Action</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	{filteredReports.map(
+																		(report) => (
+																			<tr key={report._id}>
+																				<td>
+																					{new Date(
+																						report.date,
+																					).toDateString()}
+																				</td>
+																				<td>
+																					{
+																						report.description
+																					}
+																				</td>
+																				<td>
+																					{
+																						report.attachment
+																					}
+																				</td>
+																				<td>
+																					{/* <button
                                           className="btn btn-primary"
                                           onClick={() => openPdf(report.path)}
                                         >
                                           View PDF
                                         </button> */}
-                                        <button
-																							className="btn btn-sm bg-info-light me-2"
-																							onClick={() =>
-																								openPdf(
-																									report.path,
-																								)
-																							}
-																						>
-																							<i className="far fa-eye" />{" "}
-																							View
-																						</button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                        {isPdfOpen && (
-			<div className="pdf-container w-full h-500 ">
-                              <iframe
-                                style={{
-                                  width: "100%",
-                                  height: "600px",
-                                }}
-                                id="pdf-iframe"
-                                className="w-full h-500"
-                                frameBorder="0"
-                                src={pdfPath}
-                              ></iframe>
-                              <button
-                                onClick={closePdf}
-                                className="btn btn-sm bg-danger-light m-3"
-                              >
-                                Close
-                              </button>
-                            </div>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <nav>
-                      <ul className="pagination">
-                        <li className="page-item">
-                          <a
-                            href="#"
-                            className="page-link"
-                            onClick={() => paginate1(currentPageToday - 1)}
-                          >
-                            Previous
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a
-                            href="#"
-                            className="page-link"
-                            onClick={() => paginate1(currentPageToday + 1)}
-                          >
-                            Next
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+																					<button
+																						className="btn btn-sm bg-info-light me-2"
+																						onClick={() =>
+																							openPdf(
+																								report.path,
+																							)
+																						}
+																					>
+																						<i className="far fa-eye" />{" "}
+																						View
+																					</button>
+																				</td>
+																			</tr>
+																		),
+																	)}
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												{isPdfOpen && (
+													<div className="pdf-container w-full h-500 ">
+														<iframe
+															style={{
+																width: "100%",
+																height: "600px",
+															}}
+															id="pdf-iframe"
+															className="w-full h-500"
+															frameBorder="0"
+															src={pdfPath}
+														></iframe>
+														<button
+															onClick={closePdf}
+															className="btn btn-sm bg-danger-light m-3"
+														>
+															Close
+														</button>
+													</div>
+												)}
+											</div>
+										</div>
+									</div>
+									<div className="col-sm-12">
+										<nav>
+											<ul className="pagination">
+												<li className="page-item">
+													<a
+														href="#"
+														className="page-link"
+														onClick={() =>
+															paginate1(currentPageToday - 1)
+														}
+													>
+														Previous
+													</a>
+												</li>
+												<li className="page-item">
+													<a
+														href="#"
+														className="page-link"
+														onClick={() =>
+															paginate1(currentPageToday + 1)
+														}
+													>
+														Next
+													</a>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default LabReports;
-
-

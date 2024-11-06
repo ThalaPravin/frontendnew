@@ -189,7 +189,7 @@ export default function Prescriptions() {
 					<div className="container">
 						<div className="row align-items-center inner-banner">
 							<div className="col-md-12 col-12 text-center">
-								<h2 className="breadcrumb-title">Prescriptions</h2>
+								<h2 className="breadcrumb-title">TwinsDoc Prescriptions</h2>
 							</div>
 						</div>
 					</div>
@@ -294,7 +294,7 @@ export default function Prescriptions() {
 															href="#pat_appointment"
 															data-bs-toggle="tab"
 														>
-															Prescriptions
+															Twinsdoc Prescriptions
 														</a>
 													</li>
 												</ul>

@@ -32,47 +32,54 @@ export default function DoctorRegister() {
 
 	const onSubmit = async (data) => {
 		if (data.password !== data.confirmPassword) {
-			// setLoading(false); // Set loading to false after validation
-			toast("Passwords do not match");
+			toast.error("Passwords do not match");
 			return;
 		}
-
+	
 		try {
-			// Remove confirm password field from data
 			delete data.confirmPassword;
-
-			// Set name field to email
 			data.name = data.email;
-
-			// Replace phoneNumber with mobileNumber
 			data.mobileNumber = data.phoneNumber;
 			delete data.phoneNumber;
-
-			// Include the role in the form data
 			data.role = role;
-
-			// Include status field set to "active"
 			data.status = "active";
-
-			console.log(data);
-
-			// Send form data to backend
+	
+			// Make the API request
 			const response = await axios.post("http://localhost:5000/user/signup", data, {
 				headers: {
 					isvalidrequest: "twinsistech",
 				},
 			});
-
-			toast("Account Create Successfully");
-
-			// Navigate to the OTP page after successful signup
-			navigate("/login", { state: { phoneNumber: data.mobileNumber } });
+	
+			// Check if the response is valid
+			console.log("Response:", response);
+	
+			if (response.data.status === false) {
+				toast.error(response.data.message || "Signup failed");
+			} else {
+				toast.success("Account Created Successfully");
+				navigate("/login", { state: { phoneNumber: data.mobileNumber } });
+			}
 		} catch (error) {
-			// setLoading(false); // Set loading to false after error
+			// Log the error in the console
 			console.error("Error submitting form:", error);
-			// Handle error, show error message, etc.
+	
+			if (error.response) {
+				// Server responded with a status other than 2xx
+				console.error("Response error:", error.response);
+				toast.error(error.response.data.message || "An error occurred during signup");
+			} else if (error.request) {
+				// Request was made but no response received
+				console.error("Request error:", error.request);
+				toast.error("No response received from the server");
+			} else {
+				// Something happened in setting up the request
+				console.error("Error:", error.message);
+				toast.error("An unexpected error occurred");
+			}
 		}
 	};
+	
 
 	useEffect(() => {
 		window.scrollTo(0, 0);

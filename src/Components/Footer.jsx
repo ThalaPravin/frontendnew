@@ -12,7 +12,7 @@ export default function Footer() {
                 <div className="footer-logo">
                   <Link to="/" className="navbar-brand logo">
                     <img
-                      src="/assets/img/favicon/TwinsDoc_Logo.png"
+                      src="/assets/img/favicon/20240505_203516.png"
                       className="img-fluid"
                       alt="Logo"
                     />

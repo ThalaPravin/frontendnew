@@ -440,6 +440,7 @@ const LabReports = () => {
 			const patient = localStorage.getItem("patientInfo");
 			const patientId = JSON.parse(patient)?._id;
 			const token = localStorage.getItem("token");
+
 			try {
 				const response = await axios.get(
 					`http://localhost:5000/patient/${patientId}/reports`,
@@ -450,9 +451,10 @@ const LabReports = () => {
 						},
 					},
 				);
-				setLabReports(response.data.result);
+				setLabReports(response.data.result || []); // Ensure it’s an array
 			} catch (error) {
 				console.error("Error fetching lab reports:", error);
+				setLabReports([]); // Fallback to empty array on error
 			}
 		};
 
@@ -487,10 +489,14 @@ const LabReports = () => {
 		setIsLoggedIn(false);
 	};
 
-	const filteredReports = labReports.filter((report) => report.type === reportType);
+	const filteredReports = Array.isArray(labReports) 
+		? labReports.filter((report) => report.type === reportType) 
+		: [];
+
 	const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
 	const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
 	const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
+
 	return (
 		<>
 			<div className="main-wrapper">
@@ -593,7 +599,6 @@ const LabReports = () => {
 												<li className="nav-item">
 													<a
 														className="nav-link active"
-														// href="#pat_appointment"
 														data-bs-toggle="tab"
 													>
 														Reports{" "}
@@ -636,7 +641,7 @@ const LabReports = () => {
 																<thead>
 																	<tr>
 																		<th>Date</th>
-																		<th>Description</th>
+																		<th>Testname</th>
 																		<th>Attachment</th>
 																		<th>Action</th>
 																	</tr>
@@ -661,12 +666,6 @@ const LabReports = () => {
 																					}
 																				</td>
 																				<td>
-																					{/* <button
-                                          className="btn btn-primary"
-                                          onClick={() => openPdf(report.path)}
-                                        >
-                                          View PDF
-                                        </button> */}
 																					<button
 																						className="btn btn-sm bg-info-light me-2"
 																						onClick={() =>
@@ -688,55 +687,22 @@ const LabReports = () => {
 													</div>
 												</div>
 												{isPdfOpen && (
-													<div className="pdf-container w-full h-500 ">
+													<div className="pdf-container w-full h-96 flex items-center justify-center mt-4">
 														<iframe
-															style={{
-																width: "100%",
-																height: "600px",
-															}}
-															id="pdf-iframe"
-															className="w-full h-500"
-															frameBorder="0"
 															src={pdfPath}
+															width="100%"
+															height="600"
 														></iframe>
 														<button
 															onClick={closePdf}
-															className="btn btn-sm bg-danger-light m-3"
+															className="close-btn bg-red-500 text-white p-2 rounded"
 														>
-															Close
+															Close PDF
 														</button>
 													</div>
 												)}
 											</div>
 										</div>
-									</div>
-									<div className="col-sm-12">
-										<nav>
-											<ul className="pagination">
-												<li className="page-item">
-													<a
-														href="#"
-														className="page-link"
-														onClick={() =>
-															paginate1(currentPageToday - 1)
-														}
-													>
-														Previous
-													</a>
-												</li>
-												<li className="page-item">
-													<a
-														href="#"
-														className="page-link"
-														onClick={() =>
-															paginate1(currentPageToday + 1)
-														}
-													>
-														Next
-													</a>
-												</li>
-											</ul>
-										</nav>
 									</div>
 								</div>
 							</div>

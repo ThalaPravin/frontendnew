@@ -314,10 +314,12 @@ export default function Homepage() {
 											</div>
 										</div>
 
+										
+
 										{/* Location Dropdown */}
-										<div className="search-input search-map-line">
+										{/* <div className="search-input search-map-line">
 											<i className="feather-map-pin" />
-											<div>
+											<div> */}
 												{/* <select
                           className="form-control mx-3 border-0"
                           value={selectedLocation}
@@ -329,7 +331,7 @@ export default function Homepage() {
                             </option>
                           ))}
                         </select> */}
-												<input
+												{/* <input
 													type="text"
 													value={searchTerm}
 													onChange={handleSearchChange}
@@ -359,7 +361,7 @@ export default function Homepage() {
 													</ul>
 												)}
 											</div>
-										</div>
+										</div> */}
 
 										{/* Search Button */}
 										<div className="form-search-btn">
@@ -407,7 +409,7 @@ export default function Homepage() {
 							<div className="col-lg-6">
 								<div className="banner-img ">
 									<img
-										src="/assets/img/newBanner2.png"
+										src="/assets/img/hBanner1.png"
 										className="img-fluid"
 										alt="patient-image"
 									/>

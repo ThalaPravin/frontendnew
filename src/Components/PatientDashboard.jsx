@@ -302,6 +302,186 @@ export default function Patientdashboard() {
                     </div>
                   </div>
                 </div> */}
+                <div className="col-md-7 col-lg-8 col-xl-12">
+								<div className="row">
+									<div className="col-md-24">
+										<div className="card dash-card">
+											<div className="card-body">
+                <div className="row">
+														<div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar1">
+																	<div
+																		className="circle-graph1"
+																		data-percent={75}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/height.png"
+																			className="img-fluid "
+																			alt="patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Height</h6>
+
+																	<h3>{patientInfo.height} ft. </h3>
+																	<p className="text-muted">
+																		{/* Till Today */}
+																	</p>
+																</div>
+															</div>
+														</div>
+                            <div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar2">
+																	<div
+																		className="circle-graph2"
+																		data-percent={65}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/weight.png"
+																			className="img-fluid"
+																			alt="Patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Weight</h6>
+																	<h3>{patientInfo.weight} kg</h3>
+																	<p className="text-muted">
+																		{/* {new Date().toDateString()} */}
+																	</p>
+																</div>
+															</div>
+														</div>
+                            <div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar1">
+																	<div
+																		className="circle-graph1"
+																		data-percent={75}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/bp.png"
+																			className="img-fluid"
+																			alt="patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Blood Preassure</h6>
+
+																	<h5>120/80 mmHg</h5>
+																	<p className="text-muted">
+																		{/* Till Today */}
+																	</p>
+																</div>
+															</div>
+														</div>
+                            <div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar1">
+																	<div
+																		className="circle-graph1"
+																		data-percent={75}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/hr.png"
+																			className="img-fluid"
+																			alt="patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Heart Rate</h6>
+
+																	<h3>6 BPM</h3>
+																	<p className="text-muted">
+																		{/* Till Today */}
+																	</p>
+																</div>
+															</div>
+														</div>
+                         
+                            <div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar1">
+																	<div
+																		className="circle-graph1"
+																		data-percent={75}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/sugarLevel.png"
+																			className="img-fluid"
+																			alt="patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Last Sugar Level</h6>
+
+																	<h3>6 mg/dl</h3>
+																	<p className="text-muted">
+																		{/* Till Today */}
+																	</p>
+																</div>
+															</div>
+														</div>
+														<div className="col-md-12 col-lg-4">
+															<div className="dash-widget dct-border-rht">
+																<div className="circle-bar circle-bar2">
+																	<div
+																		className="circle-graph2"
+																		data-percent={65}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/temp.png"
+																			className="img-fluid"
+																			alt="Patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Body Temperature</h6>
+																	<h3>4 °C</h3>
+																	<p className="text-muted">
+																		{/* {new Date().toDateString()} */}
+																	</p>
+																</div>
+															</div>
+														</div>
+														<div className="col-md-12 col-lg-4">
+															<div className="dash-widget">
+																<div className="circle-bar circle-bar3">
+																	<div
+																		className="circle-graph3"
+																		data-percent={50}
+																	>
+																		<img
+																			src="/assets/img/dash-icon/o2.png"
+																			className="img-fluid"
+																			alt="Patient"
+																		/>
+																	</div>
+																</div>
+																<div className="dash-widget-info">
+																	<h6>Oxygen Level</h6>
+																	<h3>6 mmHg</h3>
+																	<p className="text-muted">
+																		{/* {new Date().toDateString()}{" "}
+																		Onwards */}
+																	</p>
+																</div>
+															</div>
+														</div>
+													</div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          
 								<div className="row patient-graph-col">
 									<div className="col-12"></div>
 								</div>
